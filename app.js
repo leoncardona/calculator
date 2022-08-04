@@ -91,26 +91,34 @@ const showResult = () => {
   updateDisplay(result);
 }
 
+const pressNumber = (event, isKeyboardInput) => {
+  const number = (isKeyboardInput) ? event.key : event.target.innerHTML;
+  if (isOperating == true) {
+    clearDisplay();
+    isOperating = false;
+  }
+  updateDisplay(number);
+}
+
+const pressOperation = (event, isKeyboardInput) => {
+  const operation = (isKeyboardInput) ? event.key : event.target.innerHTML;
+  if (storedNumber) {
+    showResult();
+  }
+  isOperating = true;
+  setCurrentOperation(operation);
+  storeDisplayNumber();
+}
+
 for (let i = 0; i < numbers.length; i++) {
   numbers[i].addEventListener('click', (event) => {
-    const number = event.target.innerHTML;
-    if (isOperating == true) {
-      clearDisplay();
-      isOperating = false;
-    }
-    updateDisplay(number);
+    pressNumber(event, false);
   });
 }
 
 for (let i = 0; i < operations.length; i++) {
   operations[i].addEventListener('click', (event) => {
-    const operation = event.target.innerHTML;
-    if (storedNumber) {
-      showResult();
-    }
-    isOperating = true;
-    setCurrentOperation(operation);
-    storeDisplayNumber();
+    pressOperation(event, false);
   });
 }
 
@@ -148,6 +156,30 @@ percentage.addEventListener('click', () => {
     }
     clearDisplay();
     updateDisplay(result);
+  }
+});
+
+document.addEventListener('keydown', (event) => {
+  const KEY = event.key;
+  const NUMBERS = '.0123456879';
+  const OPERATIONS = '+-*/';
+  const isNumber = NUMBERS.includes(KEY);
+  const isOperation = OPERATIONS.includes(KEY);
+  if (isNumber) {
+    pressNumber(event, true);
+  }
+  if (isOperation) {
+    pressOperation(event, true);
+  }
+  if (KEY === 'Enter') {
+    showResult();
+  }
+  if (KEY === 'Backspace') {
+    if (displayNumber.length > 1) {
+      const result = displayNumber.slice(0, -1);
+      clearDisplay();
+      updateDisplay(result);
+    }
   }
 });
 
