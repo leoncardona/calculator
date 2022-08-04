@@ -1,2 +1,2 @@
 # calculator
-Test it! (https://leoncardona.github.io/calculator/)
+[Test it!](https://leoncardona.github.io/calculator/)
