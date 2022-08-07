@@ -52,7 +52,9 @@ const operate = (operation, a, b) => {
       break;
   }
   if (result.toString().length >= DISPLAY_SIZE) {
-    result = +(Math.round(result + "e+6")  + "e-6");
+    const truncatedResult = Math.trunc(result);
+    const decimalsToRound = DISPLAY_SIZE - truncatedResult.toString().length - 1;
+    result = +(Math.round(result + `e+${decimalsToRound}`)  + `e-${decimalsToRound}`);
   }
   return result;
 }
